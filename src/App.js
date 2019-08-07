@@ -13,11 +13,9 @@ class App extends React.Component {
       prefCodes: {},
       chartOptions: {
         legend: {
-          align: 'center',
-          verticalAlign: 'top',
-          floating: true,
-          x: 0,
-          y: 100
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle'
         },
         xAxis: {
           categories: [],
@@ -25,18 +23,7 @@ class App extends React.Component {
         series: [
           { data: [] }
         ],
-        plotOptions: {
-          series: {
-            showCheckbox: true,
-            point: {
-              events: {
-                mouseOver: (e) => this.fetchPrefecturePopulation(e)
-              }
-            }
-          }
-        }
       },
-      hoverData: null
     };
 
     this.fetchPrefecturePopulation = this.fetchPrefecturePopulation.bind(this)
@@ -45,33 +32,18 @@ class App extends React.Component {
   fetchPrefecturePopulation(e) {
     // const res = await fetchPrefecturePopulation(1)
     // console.log(res, 'did mount results')
-
-  //   series: [{
-  //     name: 'Installation',
-  //     data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-  // }, {
-  //     name: 'Manufacturing',
-  //     data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-  // }, {
-  //     name: 'Sales & Distribution',
-  //     data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-  // }, {
-  //     name: 'Project Development',
-  //     data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-  // }, {
-  //     name: 'Other',
-  //     data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-  // }],
   }
 
   async componentDidMount() {
     try {
-      const res = await fetchPrefectures()
+      // const res = await fetchPrefectures()
+      const res = prefectures
       const randPref = Math.floor(Math.random() * Math.floor(res.result.length))
       const { prefCode, prefName } = res.result[randPref]
 
       // we randomly fetch one of the prefecures data using their prefCode
-      const popData = await fetchPrefecturePopulation(prefCode)
+      // const popData = await fetchPrefecturePopulation(prefCode)
+      const popData = population
       const prefGeneralPop = popData.result.data[0].data.map(el => el.value)
       const years = popData.result.data[0].data.map(el => el.year)
 
@@ -93,26 +65,36 @@ class App extends React.Component {
     }
   }
 
-//   Highcharts.chart('container', {
-//     plotOptions: {
-        // series: {
-        //     showCheckbox: true
-        // }
-//     },
-
-//     series: [{
-//         data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-//         selected: true
-//     }, {
-//         data: [144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4, 29.9, 71.5, 106.4, 129.2]
-//     }]
-// });
+// position: absolute;
+// z-index: 100;
+// margin-top: 3rem;
 
   render() {
     const { chartOptions } = this.state
     console.log(this.state)
+
+    const checkboxGrid = {
+      'display': 'grid',
+      'gridTemplateColumns': 'repeat(10, 1fr)',
+      'gridGap': '10px',
+    }
+
+    const displayPrefectureCheckboxes = () => {
+      return prefectures.result.map(pref => (
+        <label key={`prefCheckbox-${pref.prefName}`}>
+          <input
+            name="isGoing"
+            type="checkbox"
+            checked
+            onChange={() => this.fetchPrefecturePopulation(pref.prefCode) } />
+            { pref.prefName }
+        </label>
+      ))
+    }
+
     return(
       <div className="App">
+        <div style={checkboxGrid}>{ displayPrefectureCheckboxes() }</div>
         <HighchartsReact
           highcharts={Highcharts}
           options={chartOptions}
