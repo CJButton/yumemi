@@ -18,11 +18,7 @@ const App = () => {
   const [prefArray, updatePrefArray] = useState([]) // [ { prefName: str, prefCode: num } ]
   const [initialLoad, updateInitialLoad] = useState(true)
   const chartRef = useRef();
-
-    // title: {
-    //   text: 'Prefecture Population',
-    //   align: 'center',
-    //  },
+  //   text: 'Prefecture Population',
 
   const verifyIfPrefectureIsDisplayed = (prefCode) => {
     return chartOptions.series.findIndex(el => el.prefCode === prefCode)
@@ -30,18 +26,15 @@ const App = () => {
 
   const removeFromChart = (idx, prefName) => {
     updateLoader(true)
-    const series = JSON.parse(JSON.stringify(chartOptions.series))
-    series.splice(idx, 1)
-    const updatedChartOptions = {
-      ...chartOptions,
-      series: [ ...series ]
-    }
-    updateCheckedPrefs({...checkedPrefs, [prefName]: false })
+    const updatedChartOptions = JSON.parse(JSON.stringify(chartOptions))
+    updatedChartOptions.series.splice(idx, 1)
+
+    updateCheckedPrefs({ ...checkedPrefs, [prefName]: false })
     updateChart(updatedChartOptions)
     updateLoader(false)
   }
 
-  const getPrefecturePopulation = async ({prefName, prefCode}) => {
+  const togglePrefecturePopulation = async ({prefName, prefCode}) => {
     updateLoader(true)
     const prefStatus = verifyIfPrefectureIsDisplayed(prefCode)
     if(prefStatus > -1) return removeFromChart(prefStatus, prefName)
@@ -52,14 +45,9 @@ const App = () => {
       name: prefName,
       data: res.result.data[0].data.map(el => el.value) 
     }
-    const series = JSON.parse(JSON.stringify(chartOptions.series))
-    const updatedChartOptions = {
-        ...chartOptions,
-        series: [
-          ...series,
-          additionalSeries
-        ],
-    }
+    const updatedChartOptions = JSON.parse(JSON.stringify(chartOptions))
+    updatedChartOptions.series.push(additionalSeries)
+
     updateChart(updatedChartOptions)
     updateCheckedPrefs({...checkedPrefs, [prefName]: true })
     updateLoader(false)
@@ -75,11 +63,11 @@ const App = () => {
       try {
         const res = await fetchPrefectures()
         if(res.statusCode) throw new Error()
-        
-        const randPref = Math.floor(Math.random() * Math.floor(res.result.length))
-        const { prefCode, prefName } = res.result[randPref]
 
-        // we randomly fetch one of the prefecures data using their prefCode
+        const randPref = Math.floor(Math.random() * Math.floor(res.result.length))
+        const { prefCode, prefName } = res.result[46]
+
+        // we randomly fetch one of the prefecures data using the random prefCode
         const popData = await fetchPrefecturePopulation(prefCode)
         if(popData.statusCode) throw new Error()
         
@@ -120,7 +108,7 @@ const App = () => {
               <RenderCheckboxes
                 elementsArr={prefArray}
                 checkedObj={checkedPrefs}
-                callback={getPrefecturePopulation}
+                callback={togglePrefecturePopulation}
                 elementKey={'prefName'}
               />
             </div>
