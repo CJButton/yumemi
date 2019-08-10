@@ -20,11 +20,11 @@ const App = () => {
   const [initialLoad, updateInitialLoad] = useState(true)
   const [modalOpen, updateModal] = useState(false)
   const [errorMessage, updateErrorMessage] = useState('initial')
+  const [title, updateTitle] = useState('')
   const chartRef = useRef();
-  //   text: 'Prefecture Population',
 
-  const verifyIfPrefectureIsDisplayed = (prefCode) => {
-    return chartOptions.series.findIndex(el => el.prefCode === prefCode)
+  const verifyIfPrefectureIsDisplayed = (prefName) => {
+    return chartOptions.series.findIndex(el => el.name === prefName)
   }
 
   const removeFromChart = (idx, prefName) => {
@@ -39,16 +39,14 @@ const App = () => {
 
   const togglePrefecturePopulation = async ({prefName, prefCode}) => {
     updateLoader(true)
-    const prefStatus = verifyIfPrefectureIsDisplayed(prefCode)
+    const prefStatus = verifyIfPrefectureIsDisplayed(prefName)
     if(prefStatus > -1) return removeFromChart(prefStatus, prefName)
 
     try {
       const res = await fetchPrefecturePopulation(prefCode)
-      // if(res.statusCode) throw new Error(res)
-      if(true) throw new Error(res)
+      if(res.statusCode) throw new Error(res)
 
       const additionalSeries = {
-        prefCode,
         name: prefName,
         data: res.result.data[0].data.map(el => el.value) 
       }
@@ -81,25 +79,25 @@ const App = () => {
         const res = await fetchPrefectures()
         if(res.statusCode) throw new Error(res)
 
-        const randPref = Math.floor(Math.random() * Math.floor(res.result.length))
-        const { prefCode, prefName } = res.result[randPref]
+        const randPrefIDX = Math.floor(Math.random() * Math.floor(res.result.length))
+        const { prefCode, prefName: randomPref } = res.result[randPrefIDX]
 
-        // we randomly fetch one of the prefecures data using the random prefCode
-        const popData = await fetchPrefecturePopulation(prefCode)
-        if(popData.statusCode) throw new Error()
+        const prefRes = await fetchPrefecturePopulation(prefCode)
+        if(prefRes.statusCode) throw new Error(prefRes)
         
         const prefNames = res.result.reduce((acc, pref) => ({ ...acc, [pref.prefName]: false}), {})
         updateInitialLoad(false)
-        updateCheckedPrefs({ ...prefNames, [prefName]: true })
+        updateCheckedPrefs({ ...prefNames, [randomPref]: true })
         updatePrefArray(res.result)
 
+        const title = prefRes.result.data[0].label
+        updateTitle(title)
         const initialChart = JSON.parse(JSON.stringify(HighChartsOptions))
-        initialChart.yAxis = { title: { text: '総人口' }}
-        initialChart.xAxis = { categories: popData.result.data[0].data.map(el => el.year) }
+        initialChart.yAxis = { title: { text: title }}
+        initialChart.xAxis = { categories: prefRes.result.data[0].data.map(el => el.year) }
         initialChart.series.push(
-          { prefCode, 
-            name: prefName,
-            data: popData.result.data[0].data.map(el => el.value) } )
+          { name: randomPref,
+            data: prefRes.result.data[0].data.map(el => el.value) } )
         updateChart(initialChart)
 
         const container = chartRef.current.container.current
@@ -112,7 +110,7 @@ const App = () => {
     }
     initialFetch()
   }, [])
-    console.log(errorMessage)
+
     return(
       <div className="App">
         <ModalBase 
@@ -125,6 +123,7 @@ const App = () => {
 
         { initialLoad ? null :
           (<React.Fragment>
+            { title }
             <div className='checkbox-wrapper'>
               <RenderCheckboxes
                 elementsArr={prefArray}
