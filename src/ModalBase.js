@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = ({ callback, openStatus, errorType, updateLoader }) => {
+const Modal = ({ callback, openStatus, errorType }) => {
   const showHideClassName = openStatus ? "modal display-block" : "modal display-none";
   const closeModal = () => ( callback() )
   const reloadApp = () => ( window.location.reload() )
@@ -8,13 +8,13 @@ const Modal = ({ callback, openStatus, errorType, updateLoader }) => {
   const errorData = {
     'initial': { 
       action: reloadApp,
-      buttonText: 'Reload',
-      message: 'Oh no! Initial loading has failed. Please try again!'
+      buttonText: 'もう一度試す',
+      message: 'アップロードできませんでした。'
     },
     'fetchPrefecture': {
       action: closeModal,
-      buttonText: 'Close',
-      message:  "Uh oh... We couldn't fetch that data. Sorry about that. Please try again."
+      buttonText: '閉じる',
+      message:  "データを取得できませんでした。もう一度クリックしてください。"
     },
   }
 
