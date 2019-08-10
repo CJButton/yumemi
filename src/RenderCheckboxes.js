@@ -2,7 +2,9 @@ import React from 'react';
 
 const RenderCheckboxes = ({ elementsArr, checkedObj, elementKey, callback }) => {
   return elementsArr.map(el => (
-    <label key={`checkbox-${el[elementKey]}`}>
+    <label 
+      className='checkbox--label'
+      key={`checkbox-${el[elementKey]}`}>
       <input
         type="checkbox"
         checked={checkedObj[el[elementKey]]}

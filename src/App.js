@@ -9,14 +9,17 @@ import logo from './logo.svg';
 import { fetchPrefectures,
          fetchPrefecturePopulation } from './requests'
 import RenderCheckboxes from './RenderCheckboxes'
-import ChartOptions from './HighChartsOptions'
+import HighChartsOptions from './HighChartsOptions'
+import ModalBase from './ModalBase'
 
 const App = () => {
   const [chartOptions, updateChart] = useState({})
   const [isLoading, updateLoader] = useState(false)
   const [checkedPrefs, updateCheckedPrefs] = useState({}) // { prefName: bool }
-  const [prefArray, updatePrefArray] = useState([]) // [ { prefName: str, prefCode: num } ]
+  const [prefArray, updatePrefArray] = useState([])       // [ { prefName: str, prefCode: num } ]
   const [initialLoad, updateInitialLoad] = useState(true)
+  const [modalOpen, updateModal] = useState(false)
+  const [errorMessage, updateErrorMessage] = useState('initial')
   const chartRef = useRef();
   //   text: 'Prefecture Population',
 
@@ -39,52 +42,64 @@ const App = () => {
     const prefStatus = verifyIfPrefectureIsDisplayed(prefCode)
     if(prefStatus > -1) return removeFromChart(prefStatus, prefName)
 
-    const res = await fetchPrefecturePopulation(prefCode)
-    const additionalSeries = {
-      prefCode,
-      name: prefName,
-      data: res.result.data[0].data.map(el => el.value) 
-    }
-    const updatedChartOptions = JSON.parse(JSON.stringify(chartOptions))
-    updatedChartOptions.series.push(additionalSeries)
+    try {
+      const res = await fetchPrefecturePopulation(prefCode)
+      // if(res.statusCode) throw new Error(res)
+      if(true) throw new Error(res)
 
-    updateChart(updatedChartOptions)
-    updateCheckedPrefs({...checkedPrefs, [prefName]: true })
-    updateLoader(false)
+      const additionalSeries = {
+        prefCode,
+        name: prefName,
+        data: res.result.data[0].data.map(el => el.value) 
+      }
+      const updatedChartOptions = JSON.parse(JSON.stringify(chartOptions))
+      updatedChartOptions.series.push(additionalSeries)
+
+      updateChart(updatedChartOptions)
+      updateCheckedPrefs({...checkedPrefs, [prefName]: true })
+      updateLoader(false)
+    }
+    catch(err) {
+      errorHandler(err, 'fetchPrefecture')
+    }
   }
 
-  const errorHandler = (err) => {
-    console.error('oh no! an Error')
-    console.error(err.message)
+  const errorHandler = (err, errorOrigin) => {
+    console.error(err)
+    updateErrorMessage(errorOrigin)
+    updateModal(true)
+  }
+
+  const closeModal = () => {
+    updateModal(false)
+    updateLoader(false)
   }
 
   useEffect(() => {
     const initialFetch = async () => {
       try {
         const res = await fetchPrefectures()
-        if(res.statusCode) throw new Error()
+        if(res.statusCode) throw new Error(res)
 
         const randPref = Math.floor(Math.random() * Math.floor(res.result.length))
-        const { prefCode, prefName } = res.result[46]
+        const { prefCode, prefName } = res.result[randPref]
 
         // we randomly fetch one of the prefecures data using the random prefCode
         const popData = await fetchPrefecturePopulation(prefCode)
         if(popData.statusCode) throw new Error()
         
-        const prefGeneralPop = popData.result.data[0].data.map(el => el.value)
-        const years = popData.result.data[0].data.map(el => el.year)
-        const prefCodes = res.result.reduce((acc, pref) => ({ ...acc, [pref.prefName]: false}), {})
+        const prefNames = res.result.reduce((acc, pref) => ({ ...acc, [pref.prefName]: false}), {})
         updateInitialLoad(false)
-        updateCheckedPrefs({ ...prefCodes, [prefName]: true })
+        updateCheckedPrefs({ ...prefNames, [prefName]: true })
         updatePrefArray(res.result)
 
-        const initialChart = JSON.parse(JSON.stringify(ChartOptions))
+        const initialChart = JSON.parse(JSON.stringify(HighChartsOptions))
         initialChart.yAxis = { title: { text: '総人口' }}
-        initialChart.xAxis = { categories: years }
+        initialChart.xAxis = { categories: popData.result.data[0].data.map(el => el.year) }
         initialChart.series.push(
           { prefCode, 
             name: prefName,
-            data: prefGeneralPop } )
+            data: popData.result.data[0].data.map(el => el.value) } )
         updateChart(initialChart)
 
         const container = chartRef.current.container.current
@@ -92,13 +107,19 @@ const App = () => {
         chartRef.current.chart.reflow();
       }
       catch(err) {
-        errorHandler(err)
+        errorHandler(err, 'initial')
       }
     }
     initialFetch()
   }, [])
+    console.log(errorMessage)
     return(
       <div className="App">
+        <ModalBase 
+          openStatus={modalOpen}
+          errorType={errorMessage}
+          callback={closeModal}
+          updateLoader={updateLoader} />
         <header className="App-header">
         { (isLoading || initialLoad) && <img src={logo} className="App-logo" alt="logo" /> }
 
