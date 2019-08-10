@@ -6,6 +6,8 @@
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
   pointer-events: none;
+  position: absolute;
+  z-index: 100;
 }
 
 .App-header {
@@ -30,4 +32,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.checkbox-wrapper {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-gap: 10px;
+  margin-top: 3rem;
+  width: 100%;
 }
