@@ -1,7 +1,7 @@
 import React from 'react';
 
-const RenderCheckboxes = ({ elementsArr, checkedObj, elementKey, callback }) => {
-  return elementsArr.map(el => (
+const RenderCheckboxes = ({ elementsArr, checkedObj, elementKey, callback }) => (
+  elementsArr.map(el => (
     <label 
       className='checkbox--label'
       key={`checkbox-${el[elementKey]}`}>
@@ -12,6 +12,6 @@ const RenderCheckboxes = ({ elementsArr, checkedObj, elementKey, callback }) => 
         { el[elementKey] }
     </label>
   ))
-}
+)
 
 export default RenderCheckboxes

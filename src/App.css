@@ -38,11 +38,11 @@
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   grid-gap: 10px;
-  margin-top: 3rem;
+  margin-top: 1rem;
   width: 100%;
 }
 
-.checkbox--label {
+.checkbox--label, input {
   cursor: pointer;
 }
 
