@@ -42,7 +42,7 @@
   width: 100%;
 }
 
-.checkbox--label {
+.checkbox--label, input {
   cursor: pointer;
 }
 
