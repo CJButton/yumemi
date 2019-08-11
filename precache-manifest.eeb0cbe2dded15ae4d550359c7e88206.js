@@ -1,18 +1,18 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "95f16447740fbcbd0e8d1173f49210f2",
+    "revision": "0188bfd162b1587a6f76d3bb9d1e549c",
     "url": "/yumemi/index.html"
   },
   {
-    "revision": "f8b1c45d602c9958fce0",
-    "url": "/yumemi/static/css/main.99024362.chunk.css"
+    "revision": "9812118d14d173c9915c",
+    "url": "/yumemi/static/css/main.ccce7bae.chunk.css"
   },
   {
     "revision": "3ec9b2005adce89bf4e6",
     "url": "/yumemi/static/js/2.a33128c8.chunk.js"
   },
   {
-    "revision": "f8b1c45d602c9958fce0",
+    "revision": "9812118d14d173c9915c",
     "url": "/yumemi/static/js/main.ebfe71a4.chunk.js"
   },
   {
