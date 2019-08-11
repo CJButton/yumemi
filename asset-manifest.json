@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/yumemi/static/css/main.99024362.chunk.css",
+    "main.js": "/yumemi/static/js/main.ebfe71a4.chunk.js",
+    "main.js.map": "/yumemi/static/js/main.ebfe71a4.chunk.js.map",
+    "runtime~main.js": "/yumemi/static/js/runtime~main.fe8fbf4a.js",
+    "runtime~main.js.map": "/yumemi/static/js/runtime~main.fe8fbf4a.js.map",
+    "static/js/2.a33128c8.chunk.js": "/yumemi/static/js/2.a33128c8.chunk.js",
+    "static/js/2.a33128c8.chunk.js.map": "/yumemi/static/js/2.a33128c8.chunk.js.map",
+    "index.html": "/yumemi/index.html",
+    "precache-manifest.dbe8e493da89e5d6ce4764de1765b6b4.js": "/yumemi/precache-manifest.dbe8e493da89e5d6ce4764de1765b6b4.js",
+    "service-worker.js": "/yumemi/service-worker.js",
+    "static/css/main.99024362.chunk.css.map": "/yumemi/static/css/main.99024362.chunk.css.map",
+    "static/media/logo.svg": "/yumemi/static/media/logo.5d5d9eef.svg"
+  }
+}
