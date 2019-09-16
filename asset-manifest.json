@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/yumemi/static/css/main.ccce7bae.chunk.css",
-    "main.js": "/yumemi/static/js/main.ebfe71a4.chunk.js",
-    "main.js.map": "/yumemi/static/js/main.ebfe71a4.chunk.js.map",
-    "runtime~main.js": "/yumemi/static/js/runtime~main.fe8fbf4a.js",
-    "runtime~main.js.map": "/yumemi/static/js/runtime~main.fe8fbf4a.js.map",
-    "static/js/2.a33128c8.chunk.js": "/yumemi/static/js/2.a33128c8.chunk.js",
-    "static/js/2.a33128c8.chunk.js.map": "/yumemi/static/js/2.a33128c8.chunk.js.map",
-    "index.html": "/yumemi/index.html",
-    "precache-manifest.eeb0cbe2dded15ae4d550359c7e88206.js": "/yumemi/precache-manifest.eeb0cbe2dded15ae4d550359c7e88206.js",
-    "service-worker.js": "/yumemi/service-worker.js",
-    "static/css/main.ccce7bae.chunk.css.map": "/yumemi/static/css/main.ccce7bae.chunk.css.map",
-    "static/media/logo.svg": "/yumemi/static/media/logo.5d5d9eef.svg"
+    "main.css": "/prefecture-pop-japan/static/css/main.ccce7bae.chunk.css",
+    "main.js": "/prefecture-pop-japan/static/js/main.7e624cc5.chunk.js",
+    "main.js.map": "/prefecture-pop-japan/static/js/main.7e624cc5.chunk.js.map",
+    "runtime~main.js": "/prefecture-pop-japan/static/js/runtime~main.09ae523a.js",
+    "runtime~main.js.map": "/prefecture-pop-japan/static/js/runtime~main.09ae523a.js.map",
+    "static/js/2.a33128c8.chunk.js": "/prefecture-pop-japan/static/js/2.a33128c8.chunk.js",
+    "static/js/2.a33128c8.chunk.js.map": "/prefecture-pop-japan/static/js/2.a33128c8.chunk.js.map",
+    "index.html": "/prefecture-pop-japan/index.html",
+    "precache-manifest.fc26e3763e81a09533d8aa9d05be98de.js": "/prefecture-pop-japan/precache-manifest.fc26e3763e81a09533d8aa9d05be98de.js",
+    "service-worker.js": "/prefecture-pop-japan/service-worker.js",
+    "static/css/main.ccce7bae.chunk.css.map": "/prefecture-pop-japan/static/css/main.ccce7bae.chunk.css.map",
+    "static/media/logo.svg": "/prefecture-pop-japan/static/media/logo.5d5d9eef.svg"
   }
 }
